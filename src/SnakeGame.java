@@ -1,10 +1,10 @@
-import javax.swing.*;
+import javax.swing.JFrame;
 
 public class SnakeGame extends JFrame {
 
     public SnakeGame() {
         add(new GamePanel());
-        setTitle("Schlangen Spiel");
+        setTitle("Snack Game");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(800, 600);
         setLocationRelativeTo(null);
