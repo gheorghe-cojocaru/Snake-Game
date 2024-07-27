@@ -62,8 +62,105 @@ public class GamePanel extends JPanel implements ActionListener {
 
         locateApple();
 
-        
+        timer = new Timer(DELAY, this);
+        timer.start();
     }
 
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
+        doDrawing(g);
+    }
+
+    private void doDrawing(Graphics g) {
+        if(inGame) {
+
+            g.drawImage(apple, apple_x, apple_y, this);
+
+            for (int z = 0; z < dots; z++) {
+                if (z == 0) {
+                    g.drawImage(head, x[z], y[z], this);
+                } else {
+                    g.drawImage(ball, x[z], y[z], this);
+                }
+            }
+
+            Toolkit.getDefaultToolkit().sync();
+        } else {
+            gameOver(g);
+        }
+    }
+
+    private void gameOver(Graphics g) {
+        String msg = "Game Over";
+        Font small = new Font("Helvetica", Font.BOLD, 14);
+        FontMetrics metrics = getFontMetrics(small);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        g.drawString(msg, (B_Width - metrics.stringWidth(msg)) / 2, B_Heidt / 2);
+    }
+
+    private void checkApple() {
+        if ((x[0] == apple_x) && (y[0] == apple_y)) {
+
+            dots++;
+            locateFood();
+        }
+    }
+    private void move() {
+
+        for (int z = dots; z > 0; z--) {
+            x[z] = x[(z - 1)];
+            y[z] = x[(z -1)];
+        }
+
+        if (leftDirection) {
+            x[0] -= dotSize;
+        }
+
+        if (rightDirection) {
+            x[0] += dotSize;
+        }
+
+        if (upDirection) {
+            y[0] -= dotSize;
+        }
+
+        if (downDirection) {
+            y[0] += dotSize;
+        }
+    }
+
+    private void checkCollision() {
+
+        for (int z = dots; z > 0; z--) {
+
+            if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
+                inGame = false;
+            }
+        }
+
+        if ( y[0] >= B_Heidt) {
+            inGame = false;
+        }
+
+        if (y[0] < 0) {
+            inGame = false;
+        }
+
+        if (x[0] >= B_Width) {
+            inGame = false;
+        }
+
+        if (x[0] < 0) {
+            inGame = false;
+        }
+        if (!inGame) {
+            timer.stop();
+        }
+    }
+
+    
 }
