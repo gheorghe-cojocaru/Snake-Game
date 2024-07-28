@@ -21,14 +21,14 @@ public class GamePanel extends JPanel implements ActionListener {
     private final int DOT_SIZE = 50; // Größe der Schlange und des Biers
     private final int ALL_DOTS = 900;
     private final int RAND_POS = (B_WIDTH / DOT_SIZE) - 1;
-    private final int DELAY = 200; //Geschwindigkeit
+    private final int DELAY = 300; //Geschwindigkeit
 
     private final int x[] = new int[ALL_DOTS];
     private final int y[] = new int[ALL_DOTS];
 
     private int dots;
-    private int apple_x;
-    private int apple_y;
+    private int beer_x;
+    private int beer_y;
 
     public boolean leftDirection = false;
     public boolean rightDirection = true;
@@ -38,7 +38,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     private Timer timer;
     private Image ball;
-    private Image apple;
+    private Image beer;
     private Image head;
 
     public GamePanel() {
@@ -58,15 +58,15 @@ public class GamePanel extends JPanel implements ActionListener {
     private void loadImages() {
         try {
             BufferedImage ballImage = ImageIO.read(new File("src/resources/dot.png"));
-            BufferedImage appleImage = ImageIO.read(new File("src/resources/beer.png"));
+            BufferedImage beerImage = ImageIO.read(new File("src/resources/beer.png"));
             BufferedImage headImage = ImageIO.read(new File("src/resources/head.png"));
 
-            if (ballImage == null || appleImage == null || headImage == null) {
+            if (ballImage == null || beerImage == null || headImage == null) {
                 throw new IOException("Ein oder mehrere Bilddateien konnten nicht geladen werden.");
             }
 
             ball = ballImage.getScaledInstance(DOT_SIZE, DOT_SIZE, Image.SCALE_SMOOTH);
-            apple = appleImage.getScaledInstance(DOT_SIZE, DOT_SIZE, Image.SCALE_SMOOTH);
+            beer = beerImage.getScaledInstance(DOT_SIZE, DOT_SIZE, Image.SCALE_SMOOTH);
             head = headImage.getScaledInstance(DOT_SIZE, DOT_SIZE, Image.SCALE_SMOOTH);
         } catch (IOException e) {
             e.printStackTrace();
@@ -98,7 +98,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private void doDrawing(Graphics g) {
         if (inGame) {
 
-            g.drawImage(apple, apple_x, apple_y, this);
+            g.drawImage(beer, beer_x, beer_y, this);
 
             for (int z = 0; z < dots; z++) {
                 if (z == 0) {
@@ -130,8 +130,8 @@ public class GamePanel extends JPanel implements ActionListener {
         int snakeHeadY = y[0];
 
         // Überprüfen, ob die Mitte des Schlangenkopfes innerhalb der Grenzen des Apfels liegt
-        if (snakeHeadX >= apple_x && snakeHeadX < apple_x + DOT_SIZE &&
-                snakeHeadY >= apple_y && snakeHeadY < apple_y + DOT_SIZE) {
+        if (snakeHeadX >= beer_x && snakeHeadX < beer_x + DOT_SIZE &&
+                snakeHeadY >= beer_y && snakeHeadY < beer_y + DOT_SIZE) {
             dots++;
             locateApple();
         }
@@ -190,10 +190,10 @@ public class GamePanel extends JPanel implements ActionListener {
 
     private void locateApple() {
         int r = (int) (Math.random() * RAND_POS);
-        apple_x = r * DOT_SIZE;
+        beer_x = r * DOT_SIZE;
 
         r = (int) (Math.random() * RAND_POS);
-        apple_y = r * DOT_SIZE;
+        beer_y = r * DOT_SIZE;
     }
 
     @Override
